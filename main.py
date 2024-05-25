@@ -86,50 +86,6 @@ async def on_member_join(member):
         logging.error(f"Unexpected error: {e}")
 
 
-@bot.tree.command(name="gem", description="talk to gemini pro")
-async def ask_gemini_slash(interaction: discord.Interaction, question: str):
-   try:
-       headers = {'Authorization': f'Bearer {GEMINI_API_KEY}'}
-       response = requests.post(
-           'https://api.gemini.com/v1/completions',
-           headers=headers,
-           json={'prompt': question}
-        )
-        response.raise_for_status()
-
-        data = response.json()
-        if 'choices' in data and len(data['choices']) > 0:
-            answer = data['choices'][0]['text']
-            embed = discord.Embed(title="Gem Says:", description=answer)
-            await interaction.response.send_message(embed=embed)
-        else:
-            logging.error(
-                "Gem Pro API response format has changed, can't extract answer.")
-            await interaction.response.send_message("Unexpected response from gem <:SatisfiedCheems:1230175084912840734>")
-
-    except requests.exceptions.RequestException as e:
-        logging.error(f"404 from gem: {e}")
-        await interaction.response.send_message("An error returned while trying to communicate with Gemini Pro. Try again.")
-    except Exception as e:
-        logging.error(f"Random Error in 'gem' command: {e}")
-        await interaction.response.send_message("Gem is not working rn, why dont u ask it why? idk.")
-# Image search command
-@bot.command(name='image')
-async def search_image(ctx, *, query):
-    try:
-        _search_params = {
-            'q': query,
-            'num': 4, 
-            'safe': 'off', 
-        }
-        gis.search(search_params=_search_params)
-
-        for image in gis.results():
-            await ctx.send(image.url)
-            break  
-    except Exception as e:
-        logging.error(f"Error during image search: {e}")
-        await ctx.send("An error occurred while searching for images.")
 @bot.command(name='search')
 async def search_web(ctx, *, query):
     try:
