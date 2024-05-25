@@ -1,0 +1,45 @@
+name: gitcord
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+      - name: Get Latest Commit
+        id: latest_commit
+        run: echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+      - name: Get Changes
+        id: changes
+        run: |
+          echo "commits=$(git log --oneline origin/main..HEAD | wc -l)" >> $GITHUB_OUTPUT
+          echo "pushed_by=${{ github.actor }}" >> $GITHUB_OUTPUT
+
+      - name: Notify on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: "<@1225867607039672402>"  # Your Discord user ID 
+          title: "Workflow - ${{ github.event_name }}"  # Dynamic title based on event type (push or pull_request)
+          description: |
+            **Build and Deploy to GitHub Pages**
+            
+            Commit Message: ${{ steps.latest_commit.outputs.commit_message }}
+
+            ${{ steps.changes.outputs.commits }} commits were ${{ github.event_name }}ed by ${{ steps.changes.outputs.pushed_by }}  # (Optional) Add an image to the embed
+          color: ${{ job.status == 'success' && '0x00FF00' || '0xFF0000' }}  # Conditional color (green for success, red for failure)
+          url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"  # Link to workflow run
+          username: GitHub Actions
+          avatar_url: "https://cdn.discordapp.com/attachments/1198383971780804709/1243724296480755773/urse08sthnl91.jpg?ex=66528403&is=66513283&hm=cac24bc105f6b2a2fca0ca32e2b4ebe0c85bbdd16b5dfe419cba67a619a55c30&"
