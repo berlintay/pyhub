@@ -2,9 +2,9 @@
   <h1>Cogs to add</h1>
 </div> <br>
 
-- [ x ] Gem
+- [x] Gem
 
 - [ ]  websearch
-- [ x ] imagesearch
-- [ ] videosearch
+- [ ] imagesearch
+- [x] videosearch
 - [ ] embedcreat
