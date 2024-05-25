@@ -40,6 +40,6 @@ jobs:
 
             ${{ steps.changes.outputs.commits }} commits were ${{ github.event_name }}ed by ${{ steps.changes.outputs.pushed_by }}  # (Optional) Add an image to the embed
           color: ${{ job.status == 'success' && '0x00FF00' || '0xFF0000' }}  # Conditional color (green for success, red for failure)
-          url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"  # Link to workflow run
+          url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"  
           username: GitHub Actions
           avatar_url: "https://cdn.discordapp.com/attachments/1198383971780804709/1243724296480755773/urse08sthnl91.jpg?ex=66528403&is=66513283&hm=cac24bc105f6b2a2fca0ca32e2b4ebe0c85bbdd16b5dfe419cba67a619a55c30&"
