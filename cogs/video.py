@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
 from googleapiclient.discovery import build
 import asyncio
 import logging
+import os
 
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
@@ -13,7 +13,7 @@ class VideoCog(commands.Cog):
         self.bot = bot
         self.youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
-    @commands.hybrid_command(name='video', description="search youtube videos.")
+    @commands.hybrid_command(name='video', description="Search YouTube videos.")
     async def search_video(self, ctx, *, query):
         try:
             request = self.youtube.search().list(
@@ -31,19 +31,12 @@ class VideoCog(commands.Cog):
             current_page = 0
             total_pages = len(response['items']) - 1
 
-            def create_embed():
+            def get_video_link():
                 item = response['items'][current_page]
                 video_id = item['id']['videoId']
-                video_url = f"https://www.youtube.com/watch?v={video_id}"
-                embed = discord.Embed(
-                    title=item['snippet']['title'], url=video_url)
-                embed.set_image(url=item['snippet']
-                                ['thumbnails']['high']['url'])
-                embed.set_footer(
-                    text=f"Page {current_page+1} of {total_pages+1}")
-                return embed
+                return f"https://www.youtube.com/watch?v={video_id}"
 
-            message = await ctx.send(embed=create_embed())
+            message = await ctx.send(get_video_link())
             await message.add_reaction('⬅️')
             await message.add_reaction('➡️')
 
@@ -53,13 +46,12 @@ class VideoCog(commands.Cog):
             while True:
                 try:
                     reaction, _ = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
-
                     if str(reaction.emoji) == '⬅️' and current_page > 0:
                         current_page -= 1
                     elif str(reaction.emoji) == '➡️' and current_page < total_pages:
                         current_page += 1
 
-                    await message.edit(embed=create_embed())
+                    await message.edit(content=get_video_link())
                     await message.remove_reaction(reaction, ctx.author)
 
                 except asyncio.TimeoutError:

@@ -3,6 +3,8 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import requests
 import logging
+import os
+
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 

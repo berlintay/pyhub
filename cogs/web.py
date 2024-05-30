@@ -1,11 +1,12 @@
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+import os
 import requests
 import logging
 import asyncio
 
-
+load_dotenv()
 GCS_DEVELOPER_KEY = os.getenv("GCS_DEVELOPER_KEY")
 GCS_CX = os.getenv("GCS_CX")
 

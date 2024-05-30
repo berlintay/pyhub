@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 from google_images_search import GoogleImagesSearch
 import logging
 import asyncio
+import os
 
+load_dotenv()
 GCS_DEVELOPER_KEY = os.getenv("GCS_DEVELOPER_KEY")
 GCS_CX = os.getenv("GCS_CX")
 
@@ -19,22 +21,22 @@ class ImageCog(commands.Cog):
         try:
             _search_params = {
                 'q': query,
-                'num': 5,
+                'num': 10,
                 'safe': 'off',
             }
-            await self.gis.async_search(search_params=_search_params)
+            self.gis.search(search_params=_search_params)
 
             if not self.gis.results():
                 await ctx.send("No images found for your search.")
                 return
 
             current_page = 0
-            total_pages = (len(self.gis.results()) - 1) // 5
+            total_pages = (len(self.gis.results()) - 1) // 10
 
             def create_embed():
                 embed = discord.Embed(title=f"Image search Results for '{
                                       query}' ({current_page+1}/{total_pages+1})")
-                embed.set_image(url=self.gis.results()[current_page].url)
+                embed.set_image(url=self.gis.results()[current_page * 5].url)
                 return embed
 
             message = await ctx.send(embed=create_embed())

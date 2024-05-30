@@ -13,8 +13,6 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-
-
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
@@ -37,6 +35,7 @@ logger.addHandler(handler)
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 MESSAGE_CHANNEL_ID = int(os.getenv("MESSAGE_CHANNEL_ID"))
 
+
 async def load_cogs():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
@@ -52,11 +51,6 @@ async def on_ready():
     await load_cogs()
     await bot.tree.sync()
     logging.info(f'Logged in as {bot.user.name} (ID: {bot.user.id})')
-    channel = bot.get_channel(MESSAGE_CHANNEL_ID)
-    if channel:
-        await channel.send("mamahuevooo")
-    else:
-        logging.error(f"Channel is not found (ID: {MESSAGE_CHANNEL_ID})")
 
 
 @bot.event
