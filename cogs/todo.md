@@ -4,7 +4,7 @@
 
 - [x] Gem
 
-- [ ]  websearch
-- [ ] imagesearch
-- [x] videosearch
-- [ ] embedcreat
+- [X]  websearch
+- [X] imagesearch
+- [X] videosearch
+- [ ] embedcreate
