@@ -3,10 +3,10 @@ name: Run and Host Discord Bot
 on:
   push:
     branches:
-      - main
+      - enhance-bot-interactivity
   pull_request:
     branches:
-      - main
+      - enhance-bot-interactivity
 
 jobs:
   run-bot:
