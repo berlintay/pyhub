@@ -51,6 +51,7 @@ async def on_ready():
     await load_cogs()
     await bot.tree.sync()
     logging.info(f'Logged in as {bot.user.name} (ID: {bot.user.id})')
+    bot.loop.create_task(random_message_task())
 
 
 @bot.event
@@ -60,5 +61,23 @@ async def on_command_error(ctx, error):
     else:
         logging.error(f"An error occurred: {error}")
         await ctx.send("An error occurred while processing this command...")
+
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if "hello" in message.content.lower():
+        await message.channel.send("Hello! 😊")
+    await bot.process_commands(message)
+
+
+async def random_message_task():
+    await bot.wait_until_ready()
+    channel = bot.get_channel(MESSAGE_CHANNEL_ID)
+    while not bot.is_closed():
+        await channel.send("Random message!")
+        await asyncio.sleep(3600)  # Send a message every hour
 
 bot.run(TOKEN)

@@ -7,4 +7,4 @@
 - [X]  websearch
 - [X] imagesearch
 - [X] videosearch
-- [ ] embedcreate
+- [X] embedcreate

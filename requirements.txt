@@ -48,3 +48,6 @@ uritemplate==4.1.1
 urllib3==2.2.1
 websocket-client==1.8.0
 yarl==1.9.4
+Flask==2.1.1
+openai==0.27.0
+apscheduler==3.9.1
