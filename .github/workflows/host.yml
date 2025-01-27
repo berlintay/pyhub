@@ -1,0 +1,35 @@
+name: Run and Host Discord Bot
+
+on:
+  push:
+    branches:
+      - enhance-bot-interactivity
+  pull_request:
+    branches:
+      - enhance-bot-interactivity
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+- name: Install dependencies
+  run: |
+    python -m pip install pip<24.1
+    python -m pip install -r requirements.txt
+
+    - name: Run Discord bot
+      run: |
+        nohup python bot.py &
+
+    - name: Keep bot alive
+      run: |
+        while true; do sleep 1000; done
