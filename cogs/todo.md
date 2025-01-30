@@ -3,7 +3,7 @@
 </div> <br>
 
 - [x] Gem
-
+- [X] LastFM 
 - [X]  websearch
 - [X] imagesearch
 - [X] videosearch
