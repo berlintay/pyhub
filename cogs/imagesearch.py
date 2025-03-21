@@ -34,8 +34,7 @@ class ImageCog(commands.Cog):
             total_pages = (len(self.gis.results()) - 1) // 10
 
             def create_embed():
-                embed = discord.Embed(title=f"Image search Results for '{
-                                      query}' ({current_page+1}/{total_pages+1})")
+                embed = discord.Embed(title=f"Image search Results for '{query}' ({current_page + 1}/{total_pages + 1})")
                 embed.set_image(url=self.gis.results()[current_page * 5].url)
                 return embed
 
